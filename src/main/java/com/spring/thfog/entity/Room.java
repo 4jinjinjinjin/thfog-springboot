@@ -1,11 +1,9 @@
 package com.spring.thfog.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -27,8 +25,9 @@ public class Room {
     /**
      * 是否在用 0空房 1在用
      */
-    private Integer isuse;
-    private Date starttime;
+    @Column(insertable = false,columnDefinition = "int default 0")
+    private Integer isUse;
+    private Date startTime;
     private Integer orderId;
 
     public Integer getId() {
@@ -55,20 +54,20 @@ public class Room {
         this.remark = remark;
     }
 
-    public Integer getIsuse() {
-        return isuse;
+    public Integer getIsUse() {
+        return isUse;
     }
 
-    public void setIsuse(Integer isuse) {
-        this.isuse = isuse;
+    public void setIsUse(Integer isUse) {
+        this.isUse = isUse;
     }
 
-    public Date getStarttime() {
-        return starttime;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setStarttime(Date starttime) {
-        this.starttime = starttime;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
     public Integer getOrderId() {
