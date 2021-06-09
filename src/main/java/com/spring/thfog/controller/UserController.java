@@ -37,4 +37,14 @@ public class UserController {
             return new JsonResult(DescribableEnum.SUCCESS, returnObject.getResult());
         }
     }
+
+    @GetMapping("/registerLoginUser")
+    public Object registerLoginUser(String username,String password){
+        ReturnObject returnObject= userBiz.registerLoginUser(username,password);
+        if (returnObject.getIserr()){
+            return new JsonResult(DescribableEnum.FAIL, returnObject.getErrmsg());
+        }else {
+            return new JsonResult(DescribableEnum.SUCCESS, returnObject.getResult());
+        }
+    }
 }

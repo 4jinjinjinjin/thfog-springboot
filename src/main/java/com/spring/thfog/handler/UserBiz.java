@@ -9,6 +9,7 @@ import com.spring.thfog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -40,6 +41,26 @@ public class UserBiz {
                 returnObject.setErrmsg("密码不正确！");
                 return returnObject;
             }
+        }
+    }
+
+    public ReturnObject registerLoginUser(String username, String password) {
+        ReturnObject returnObject = new ReturnObject();
+        //是否存在用户名
+        User userCheck=userRepository.checkUserLogin(username);
+        if (null==userCheck){
+            User usernew= new User();
+            usernew.setUsername(username);
+            usernew.setPassword(password);
+            usernew.setCreattime(new Date());
+            userRepository.saveAndFlush(usernew);
+
+            returnObject.setResult(userRepository.checkUserLogin(username));
+            return returnObject;
+        }else {
+            returnObject.setState(-1);
+            returnObject.setErrmsg("已存在["+username+"]对应的用户信息，请重新输入用户名。");
+            return returnObject;
         }
     }
 }
