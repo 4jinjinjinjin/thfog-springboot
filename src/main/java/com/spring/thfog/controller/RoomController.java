@@ -25,13 +25,30 @@ public class RoomController {
     @Autowired
     private RoomBiz roomBiz;
 
+
     @GetMapping("/findAllRoom")
     public Object findAllRoom(){
         return new JsonResult(DescribableEnum.SUCCESS, roomBiz.findAllRoom());
     }
+
+    @GetMapping("/findRoom")
+    public Object findAllRoom(Integer id){
+        return new JsonResult(DescribableEnum.SUCCESS, roomBiz.findRoom(id));
+    }
+
     @GetMapping("/creatRoom")
     public Object creatRoom(Integer id,String name,String remark){
         ReturnObject returnObject= roomBiz.creatRoom(id,name,remark);
+        if (returnObject.getIserr()){
+            return new JsonResult(DescribableEnum.FAIL, returnObject.getErrmsg());
+        }else {
+            return new JsonResult(DescribableEnum.SUCCESS, returnObject.getResult());
+        }
+    }
+
+    @GetMapping("/creatOrder")
+    public Object creatOrder(Integer roomId,Integer empId){
+        ReturnObject returnObject= roomBiz.creatOrder(roomId,empId);
         if (returnObject.getIserr()){
             return new JsonResult(DescribableEnum.FAIL, returnObject.getErrmsg());
         }else {
