@@ -29,6 +29,12 @@ public class PayController {
     @Autowired
     PayBiz payBiz;
 
+
+    @GetMapping("/getPayByOrderId")
+    public Object getPayByOrderId(Integer orderId){
+        return new JsonResult(DescribableEnum.SUCCESS, payBiz.getPayByOrderId(orderId));
+    }
+
     @GetMapping("/creatPay")
     public Object creatPay(String payJSON){
         Pay pay= JSON.parseObject(payJSON,Pay.class);
@@ -49,6 +55,14 @@ public class PayController {
     public Object doPay(Integer flag, BigDecimal amount,Integer orderId,Integer memberId,String remark,Integer operator){
 
         ReturnObject returnObject= payBiz.doPay(flag, amount,orderId,memberId,remark,operator);
+        if (returnObject.getIserr()){
+            return new JsonResult(DescribableEnum.FAIL, returnObject.getErrmsg());
+        }else {
+            return new JsonResult(DescribableEnum.SUCCESS, returnObject.getResult());
+        }
+    }@GetMapping("/say886")
+    public Object say886(Integer orderId,Integer operator){
+        ReturnObject returnObject= payBiz.say886(orderId,operator);
         if (returnObject.getIserr()){
             return new JsonResult(DescribableEnum.FAIL, returnObject.getErrmsg());
         }else {

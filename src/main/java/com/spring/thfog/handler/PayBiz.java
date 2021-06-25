@@ -1,13 +1,11 @@
 package com.spring.thfog.handler;
 
-import com.spring.thfog.entity.Member;
-import com.spring.thfog.entity.OrderDetail;
-import com.spring.thfog.entity.Pay;
-import com.spring.thfog.entity.RoomOrder;
+import com.spring.thfog.entity.*;
 import com.spring.thfog.handler.common.ReturnObject;
 import com.spring.thfog.repository.MemberRepository;
 import com.spring.thfog.repository.OrderRepository;
 import com.spring.thfog.repository.PayRepository;
+import com.spring.thfog.repository.RoomRepository;
 import org.aspectj.weaver.ast.Or;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @Title
@@ -29,6 +29,8 @@ import java.util.Date;
 public class PayBiz {
     @Autowired
     PayRepository payRepository;
+    @Autowired
+    RoomRepository roomRepository;
     @Autowired
     OrderRepository orderRepository;
     @Autowired
@@ -57,6 +59,8 @@ public class PayBiz {
         orderPay.setOperator(operator);
         orderPay.setOpertime(new Date());
         orderPay.setRemark(remark);
+        order.setRealPay(order.getRealPay().add(amount));
+        orderRepository.save(order);
         if (flag == 4) {//会员支付
             Member member = memberRepository.findById(memberId).orElse(null);
             if (null == member) {
@@ -86,6 +90,7 @@ public class PayBiz {
         payRepository.save(orderPay);
         payRepository.flush();
         memberRepository.flush();
+        orderRepository.flush();
         return returnObject;
     }
 
@@ -113,5 +118,31 @@ public class PayBiz {
         memberRepository.flush();
         payRepository.flush();
         return returnObject;
+    }
+
+    public Object getPayByOrderId(Integer orderId) {
+        List<Pay> pay=payRepository.getPayByOrderId(orderId);
+        return pay;
+    }
+
+    public ReturnObject say886(Integer orderId,Integer operator) {
+        ReturnObject returnObject=new ReturnObject();
+        Optional<RoomOrder> roomOrder=orderRepository.findById(orderId);
+        Optional<Room> room=roomRepository.findById(roomOrder.get().getRoomId());
+        if (room.get().getOrderId().equals(orderId)){
+            roomOrder.get().setState(1);
+            roomOrder.get().setPayTime(new Date());
+            roomOrder.get().setPayOperator(operator);
+            orderRepository.saveAndFlush(roomOrder.get());
+            room.get().setIsUse(0);
+            room.get().setStartTime(null);
+            room.get().setOrderId(null);
+            roomRepository.saveAndFlush(room.get());
+            return returnObject;
+        }else {
+            returnObject.setState(-1);
+            returnObject.setErrmsg("房间号对应订单【"+room.get().getOrderId()+"】与订单号【"+orderId+"】不一致");
+            return returnObject;
+        }
     }
 }

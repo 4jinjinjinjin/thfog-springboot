@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Title
@@ -53,6 +54,9 @@ public class OrderBiz {
     public ReturnObject creatOrderDetail(OrderDetail orderDetail) {
         ReturnObject returnObject=new ReturnObject();
         orderDetail.setOpertime(new Date());
+        Optional<RoomOrder> roomOrder=orderRepository.findById(orderDetail.getOrderId());
+        roomOrder.get().setAmount(roomOrder.get().getAmount().add(orderDetail.getRealAmount()));
+        orderRepository.saveAndFlush(roomOrder.get());
         orderDetailRepository.saveAndFlush(orderDetail);
         return returnObject;
     }
