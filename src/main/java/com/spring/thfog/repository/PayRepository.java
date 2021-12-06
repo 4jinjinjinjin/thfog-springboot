@@ -16,6 +16,14 @@ import java.util.List;
  **/
 public interface PayRepository extends JpaRepository<Pay,Integer> {
 
-    @Query("select o from Pay o where o.orderId =:orderId and type=1")
+    @Query("select o from Pay o where o.orderId =:orderId and o.type=1")
     List<Pay> getPayByOrderId(Integer orderId);
+
+
+    @Query("select o,a from Pay o,User a  where o.operator=a.id and o.memberId =:memberId and o.type=2 and o.orderId=-1")
+    List<Object[]> findTopUpById(Integer memberId);
+
+    @Query("select o,a from Pay o,User a  where o.operator=a.id and o.memberId =:memberId and o.type=2 and o.orderId!=-1")
+    List<Object[]> findPayDetailById(Integer memberId);
 }
+

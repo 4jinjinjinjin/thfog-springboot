@@ -36,4 +36,15 @@ public class MemberController {
         Member member= JSON.parseObject(memberJson,Member.class);
         return new JsonResult(DescribableEnum.SUCCESS, memberBiz.creatMember(member));
     }
+
+    @GetMapping("/findTopUpById")
+    public Object findTopUpById(Integer memberId){
+        return new JsonResult(DescribableEnum.SUCCESS, memberBiz.findTopUpById(memberId));
+    }
+
+    @GetMapping("/findPayDetailById")
+    public Object findPayDetailById(Integer memberId){
+        return new JsonResult(DescribableEnum.SUCCESS, memberBiz.findPayDetailById(memberId));
+    }
+
 }

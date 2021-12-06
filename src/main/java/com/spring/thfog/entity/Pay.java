@@ -2,10 +2,7 @@ package com.spring.thfog.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -19,6 +16,7 @@ import java.util.Date;
  **/
 @Entity
 @Data
+@Table(name = "pay")
 public class Pay {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -32,6 +30,7 @@ public class Pay {
     private Date opertime;
     private String remark;
     private Integer isRefund;
+
 
     public Integer getId() {
         return id;
