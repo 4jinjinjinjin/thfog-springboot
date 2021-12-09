@@ -1,6 +1,8 @@
 package com.spring.thfog.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.spring.thfog.entity.Goods;
+import com.spring.thfog.entity.Member;
 import com.spring.thfog.handler.GoodsBiz;
 import com.spring.thfog.handler.MemberBiz;
 import com.spring.thfog.handler.common.DescribableEnum;
@@ -26,8 +28,14 @@ public class GoodsController {
     GoodsBiz goodsBiz;
 
     @GetMapping("/findAllGoods")
-    public Object findAllGoods(){
-        return new JsonResult(DescribableEnum.SUCCESS, goodsBiz.findAllGoods());
+    public Object findAllGoods(Integer goodsType){
+        return new JsonResult(DescribableEnum.SUCCESS, goodsBiz.findAllGoods(goodsType));
     }
 
+
+    @GetMapping("/creatGoods")
+    public Object creatGoods(String goodsJson){
+        Goods goods= JSON.parseObject(goodsJson,Goods.class);
+        return new JsonResult(DescribableEnum.SUCCESS, goodsBiz.creatGoods(goods));
+    }
 }

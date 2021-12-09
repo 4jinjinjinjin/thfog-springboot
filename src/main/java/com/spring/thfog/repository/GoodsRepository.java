@@ -1,7 +1,14 @@
 package com.spring.thfog.repository;
 
 import com.spring.thfog.entity.Goods;
+import com.spring.thfog.handler.GoodsBiz;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * @Title

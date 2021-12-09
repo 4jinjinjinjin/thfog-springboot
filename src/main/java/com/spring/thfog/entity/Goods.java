@@ -25,6 +25,15 @@ public class Goods {
     private Integer id;
     private String goodsName;
     private BigDecimal goodsPrice;
+    private Integer goodsType;
+
+    public Integer getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(Integer goodsType) {
+        this.goodsType = goodsType;
+    }
 
     public Integer getId() {
         return id;
