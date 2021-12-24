@@ -1,5 +1,6 @@
 package com.spring.thfog.handler;
 
+import com.alibaba.fastjson.JSONArray;
 import com.spring.thfog.entity.Goods;
 import com.spring.thfog.handler.common.ReturnObject;
 import com.spring.thfog.repository.GoodsRepository;
@@ -36,5 +37,9 @@ public class GoodsBiz {
         ReturnObject returnObject=new ReturnObject();
         goodsRepository.saveAndFlush(goods);
         return returnObject;
+    }
+
+    public Object getGoodsData(String date1,String date2) {
+        return goodsRepositoryExt.getGoodsData(date1,date2);
     }
 }

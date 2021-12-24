@@ -5,6 +5,7 @@ import com.spring.thfog.entity.RoomOrder;
 import com.spring.thfog.handler.common.ReturnObject;
 import com.spring.thfog.repository.OrderDetailRepository;
 import com.spring.thfog.repository.OrderRepository;
+import com.spring.thfog.repository.ReportRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,8 @@ public class OrderBiz {
     private OrderRepository orderRepository;
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+    @Autowired
+    private ReportRepository reportRepository;
 
     public Integer creatOrder(Integer roomId,Integer empId) {
         Integer id=orderRepository.getMaxId();
@@ -63,5 +66,18 @@ public class OrderBiz {
 
     public void delOrderDetail(Integer id) {
         orderDetailRepository.deleteById(id );
+    }
+
+    public Object getOrderData(String date1, String date2) {
+
+        return reportRepository.getOrderData(date1,date2);
+    }
+
+    public Object findPayDetail(Integer orderId) {
+        return reportRepository.findPayDetail(orderId.toString());
+    }
+
+    public Object findOrderDetail(Integer orderId) {
+        return reportRepository.findOrderDetail(orderId.toString());
     }
 }
